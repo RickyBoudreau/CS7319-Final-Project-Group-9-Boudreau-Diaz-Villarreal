@@ -1,0 +1,9 @@
+blackboard_arch/
+  Cargo.toml
+  sensor_data.json
+  src/
+    lib.rs
+    sensor_frame.rs
+    sensor_loader.rs
+    blackboard.rs
+    main.rs
