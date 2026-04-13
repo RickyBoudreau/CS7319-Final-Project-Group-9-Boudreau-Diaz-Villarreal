@@ -154,7 +154,7 @@ class MessageData {
   final String initial;
   final Color avatarColor;
   final String fullMessage; // The complete string from the sensor
-  final int unreadCount;    // Drives the red notification dot
+  final int unreadCount; // Drives the red notification dot
 
   MessageData({
     required this.id,
@@ -166,39 +166,21 @@ class MessageData {
   });
 }
 
-// 2. The Main Messages Screen
 class MessagesAppScreen extends StatelessWidget {
   const MessagesAppScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Placeholder data acting as your "recent messages" stream from Rust/Bluetooth
-    final List<MessageData> recentMessages = [
-      MessageData(
-        id: '1',
-        contactName: 'Contact A',
-        initial: 'A',
-        avatarColor: const Color(0xFFAB47BC), // Purple
-        fullMessage: 'New Message from the backend. Please check your system logs.',
-        unreadCount: 1,
-      ),
-      MessageData(
-        id: '2',
-        contactName: 'Contact B',
-        initial: 'B',
-        avatarColor: const Color(0xFF7986CB), // Blue
-        fullMessage: 'Did you see the latest update to the wireframes?',
-        unreadCount: 0,
-      ),
-      MessageData(
-        id: '3',
-        contactName: 'Contact C',
-        initial: 'C',
-        avatarColor: const Color(0xFFC62828), // Red
-        fullMessage: 'Okay, sounds good.',
-        unreadCount: 0,
-      ),
-    ];
+    // --- DYNAMIC DATA (From Rust/Bluetooth) ---
+    // This is the ONLY variable your backend needs to update.
+    const String incomingMessage =
+        'This is a test message from the Bluetooth sensor that is intentionally long to show how the truncation works on the watch face.';
+    bool isUnread = true; // Optional: Toggle this to show/hide the red dot
+
+    // --- STATIC DATA ---
+    const String contactName = 'Main Sensor';
+    const String contactInitial = 'M';
+    const Color avatarColor = Color(0xFF7986CB); // Blue
 
     return Scaffold(
       backgroundColor: const Color(0xFF333333),
@@ -207,7 +189,7 @@ class MessagesAppScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Top Title (Tap here to go back to the dashboard)
+            // Top Title (Tap to go back to dashboard)
             GestureDetector(
               onTap: () => Navigator.of(context).pop(),
               child: const Padding(
@@ -223,24 +205,91 @@ class MessagesAppScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
-            // Main Application Card with Scrollable List
+
+            // Main Application Card
             Expanded(
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF2ECEC), 
+                  color: const Color(0xFFF2ECEC),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                // Tighter padding to maximize list space
-                padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-                child: ListView.builder(
-                  padding: EdgeInsets.zero, // Removes default ListView padding
-                  itemCount: recentMessages.length,
-                  itemBuilder: (context, index) {
-                    final message = recentMessages[index];
-                    return ContactRowItem(message: message);
+                padding: const EdgeInsets.all(8.0),
+                // Replaced ListView with a single GestureDetector for the one contact
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SingleMessageDetailScreen(
+                          contactName: contactName,
+                          initial: contactInitial,
+                          avatarColor: avatarColor,
+                          fullMessage: incomingMessage,
+                        ),
+                      ),
+                    );
                   },
+                  child: Container(
+                    color: Colors
+                        .transparent, // Ensures the whole row is clickable
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Static Colored Avatar
+                        const CircleAvatar(
+                          radius: 16,
+                          backgroundColor: avatarColor,
+                          child: Text(
+                            contactInitial,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+
+                        // Text Details
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                contactName,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              // Truncated Dynamic Message
+                              Text(
+                                incomingMessage,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.black87,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Unread Notification Dot
+                        if (isUnread)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4.0, top: 4.0),
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -251,94 +300,22 @@ class MessagesAppScreen extends StatelessWidget {
   }
 }
 
-// 3. Reusable Widget for each Contact Row
-class ContactRowItem extends StatelessWidget {
-  final MessageData message;
+// -------------------------------------------------------------------------
+// Detail Screen for the Single Contact
+// -------------------------------------------------------------------------
+class SingleMessageDetailScreen extends StatelessWidget {
+  final String contactName;
+  final String initial;
+  final Color avatarColor;
+  final String fullMessage;
 
-  const ContactRowItem({super.key, required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to the detail screen to see the full text
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => MessageDetailScreen(message: message),
-          ),
-        );
-      },
-      child: Container(
-        color: Colors.transparent, // Ensures the whole row registers the tap
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-        child: Row(
-          children: [
-            // Colored Avatar
-            CircleAvatar(
-              radius: 16,
-              backgroundColor: message.avatarColor,
-              child: Text(
-                message.initial,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-            const SizedBox(width: 8),
-            
-            // Text Details (Name and Truncated Message)
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message.contactName,
-                    style: const TextStyle(fontSize: 12, color: Colors.black87, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    // If there's an unread count, show 'New Message', otherwise show the actual text
-                    message.unreadCount > 0 ? 'New Message' : message.fullMessage,
-                    style: TextStyle(
-                      fontSize: 10, 
-                      color: message.unreadCount > 0 ? Colors.black87 : Colors.black54,
-                    ),
-                    maxLines: 1, // Forces the text onto a single line
-                    overflow: TextOverflow.ellipsis, // The crucial "..." truncation
-                  ),
-                ],
-              ),
-            ),
-            
-            // Optional Unread Notification Dot
-            if (message.unreadCount > 0)
-              Padding(
-                padding: const EdgeInsets.only(left: 4.0),
-                child: Container(
-                  width: 14,
-                  height: 14,
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      message.unreadCount.toString(),
-                      style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// 4. Detail Screen to view the entire message
-class MessageDetailScreen extends StatelessWidget {
-  final MessageData message;
-
-  const MessageDetailScreen({super.key, required this.message});
+  const SingleMessageDetailScreen({
+    super.key,
+    required this.contactName,
+    required this.initial,
+    required this.avatarColor,
+    required this.fullMessage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -351,18 +328,19 @@ class MessageDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Back Indicator
               const Padding(
                 padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
                 child: Row(
                   children: [
                     Icon(Icons.chevron_left, color: Colors.white70, size: 16),
-                    Text('Back', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                    Text(
+                      'Back',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
                   ],
                 ),
               ),
-              
-              // Full Message Card
+
               Expanded(
                 child: Container(
                   width: double.infinity,
@@ -379,21 +357,35 @@ class MessageDetailScreen extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 12,
-                              backgroundColor: message.avatarColor,
-                              child: Text(message.initial, style: const TextStyle(color: Colors.white, fontSize: 12)),
+                              backgroundColor: avatarColor,
+                              child: Text(
+                                initial,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              message.contactName,
-                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87),
+                              contactName,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
                             ),
                           ],
                         ),
                         const Divider(color: Colors.grey),
                         const SizedBox(height: 4),
                         Text(
-                          message.fullMessage,
-                          style: const TextStyle(fontSize: 12, color: Colors.black87, height: 1.3),
+                          fullMessage,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.black87,
+                            height: 1.3,
+                          ),
                         ),
                       ],
                     ),
@@ -419,7 +411,7 @@ class WeatherAppScreen extends StatelessWidget {
     const String barometricPressure = '734';
 
     return Scaffold(
-      backgroundColor: const Color(0xFF333333), 
+      backgroundColor: const Color(0xFF333333),
       body: GestureDetector(
         onTap: () => Navigator.of(context).pop(),
         child: Padding(
@@ -434,17 +426,20 @@ class WeatherAppScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
               ),
-              
+
               Expanded(
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF2ECEC), 
+                    color: const Color(0xFFF2ECEC),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  // THE FIX: Reduced vertical padding from 12.0 to 8.0. 
+                  // THE FIX: Reduced vertical padding from 12.0 to 8.0.
                   // This reclaims 8 total pixels of vertical space, easily fixing a 1px overflow.
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 8.0,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -461,12 +456,20 @@ class WeatherAppScreen extends StatelessWidget {
                                     Positioned(
                                       top: 0,
                                       left: 0,
-                                      child: Icon(Icons.wb_sunny, color: Colors.yellow, size: 26),
+                                      child: Icon(
+                                        Icons.wb_sunny,
+                                        color: Colors.yellow,
+                                        size: 26,
+                                      ),
                                     ),
                                     Positioned(
                                       bottom: 0,
                                       right: 0,
-                                      child: Icon(Icons.cloud_outlined, color: Colors.lightBlue, size: 28),
+                                      child: Icon(
+                                        Icons.cloud_outlined,
+                                        color: Colors.lightBlue,
+                                        size: 28,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -475,8 +478,8 @@ class WeatherAppScreen extends StatelessWidget {
                               Text(
                                 '$currentTemp°F',
                                 style: const TextStyle(
-                                  fontSize: 32, 
-                                  fontWeight: FontWeight.w500, 
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w500,
                                   color: Colors.black,
                                 ),
                               ),
@@ -486,7 +489,7 @@ class WeatherAppScreen extends StatelessWidget {
                           Text(
                             'H: $highTemp° L: $lowTemp°',
                             style: const TextStyle(
-                              fontSize: 12, 
+                              fontSize: 12,
                               color: Colors.black87,
                             ),
                           ),
@@ -498,7 +501,7 @@ class WeatherAppScreen extends StatelessWidget {
                       const Divider(
                         color: Colors.grey,
                         thickness: 1,
-                        height: 12, 
+                        height: 12,
                       ),
 
                       Column(
@@ -507,7 +510,10 @@ class WeatherAppScreen extends StatelessWidget {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               'Barometric Pressure',
-                              style: TextStyle(fontSize: 10, color: Colors.black87),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.black87,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 2), // Slightly reduced from 4
@@ -517,12 +523,18 @@ class WeatherAppScreen extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: barometricPressure, 
-                                    style: const TextStyle(fontSize: 24, color: Colors.black)
+                                    text: barometricPressure,
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                   const TextSpan(
-                                    text: ' mmHG', 
-                                    style: TextStyle(fontSize: 12, color: Colors.black)
+                                    text: ' mmHG',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -825,7 +837,9 @@ class WaterAppScreen extends StatelessWidget {
     const String featureStatus = 'Monitoring Device';
 
     return Scaffold(
-      backgroundColor: const Color(0xFF333333), // Matches the watch face background
+      backgroundColor: const Color(
+        0xFF333333,
+      ), // Matches the watch face background
       body: GestureDetector(
         // Tap anywhere to go back to the dashboard during testing
         onTap: () => Navigator.of(context).pop(),
@@ -842,16 +856,21 @@ class WaterAppScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
               ),
-              
+
               // Main Application Card
               Expanded(
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF2ECEC), // Light off-white background
+                    color: const Color(
+                      0xFFF2ECEC,
+                    ), // Light off-white background
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 12.0,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -863,28 +882,38 @@ class WaterAppScreen extends StatelessWidget {
                           style: TextStyle(fontSize: 11, color: Colors.black87),
                         ),
                       ),
-                      
+
                       // Custom Icon Box (Red square with stacked icons)
                       Container(
                         width: 44,
                         height: 44,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFC43E3E), // Muted red from the wireframe
+                          color: const Color(
+                            0xFFC43E3E,
+                          ), // Muted red from the wireframe
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Stack(
                           alignment: Alignment.center,
                           children: [
-                            Icon(Icons.water_drop_outlined, color: Colors.white, size: 30),
+                            Icon(
+                              Icons.water_drop_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            ),
                             // Slightly shifting the X up to center it in the bulb of the drop
                             Positioned(
-                              bottom: 8, 
-                              child: Icon(Icons.close, color: Colors.white, size: 14),
+                              bottom: 8,
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 14,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      
+
                       // Bottom Status Column
                       Column(
                         children: [
@@ -892,7 +921,10 @@ class WaterAppScreen extends StatelessWidget {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               'Water Removal Feature Status:',
-                              style: TextStyle(fontSize: 10, color: Colors.black87),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.black87,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 2),
@@ -902,8 +934,8 @@ class WaterAppScreen extends StatelessWidget {
                             child: Text(
                               featureStatus,
                               style: const TextStyle(
-                                fontSize: 10, 
-                                color: Colors.black87, 
+                                fontSize: 10,
+                                color: Colors.black87,
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -963,7 +995,7 @@ class PlaceholderScreenTemplate extends StatelessWidget {
               Text(
                 '(Tap to go back)',
                 style: TextStyle(
-                  color: textColor.withOpacity(0.7),
+                  color: textColor.withValues(alpha: .7),
                   fontSize: 10,
                   decoration: TextDecoration.none,
                 ),
