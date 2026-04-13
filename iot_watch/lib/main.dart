@@ -450,10 +450,105 @@ class WaterAppScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlaceholderScreenTemplate(
-      title: 'Water App',
-      backgroundColor: const Color(0xFF0044CC),
-      icon: Icons.water_drop_outlined,
+    // Placeholders for your future Rust FFI integration.
+    // These will likely become stream yields or state variables later.
+    const String waterDetectionStatus = 'No Current Water Detection';
+    const String featureStatus = 'Monitoring Device';
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF333333), // Matches the watch face background
+      body: GestureDetector(
+        // Tap anywhere to go back to the dashboard during testing
+        onTap: () => Navigator.of(context).pop(),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top Title
+              const Padding(
+                padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
+                child: Text(
+                  'Water Removal',
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+              ),
+              
+              // Main Application Card
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF2ECEC), // Light off-white background
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Top Status Text (Now using the Rust placeholder variable)
+                      const FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          waterDetectionStatus,
+                          style: TextStyle(fontSize: 11, color: Colors.black87),
+                        ),
+                      ),
+                      
+                      // Custom Icon Box (Red square with stacked icons)
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFC43E3E), // Muted red from the wireframe
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(Icons.water_drop_outlined, color: Colors.white, size: 30),
+                            // Slightly shifting the X up to center it in the bulb of the drop
+                            Positioned(
+                              bottom: 8, 
+                              child: Icon(Icons.close, color: Colors.white, size: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      // Bottom Status Column
+                      Column(
+                        children: [
+                          const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Water Removal Feature Status:',
+                              style: TextStyle(fontSize: 10, color: Colors.black87),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          // Feature Status Text (Now using the Rust placeholder variable)
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              featureStatus,
+                              style: const TextStyle(
+                                fontSize: 10, 
+                                color: Colors.black87, 
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
