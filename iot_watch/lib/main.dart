@@ -1,121 +1,512 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const IoTWatchApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class IoTWatchApp extends StatelessWidget {
+  const IoTWatchApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+      debugShowCheckedModeBanner: false,
+      title: 'IoT Watch UI',
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color(0xFF333333),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // THE FIX: Constrain the entire app's navigation stack here
+      builder: (context, child) {
+        return Scaffold(
+          // Optional: A darker background for your web browser so the watch "pops"
+          backgroundColor: Colors.black,
+          body: Center(
+            child: ClipRRect(
+              // Optional: Add rounded corners to simulate the physical watch casing
+              borderRadius: BorderRadius.circular(32.0),
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                // 'child' represents whatever screen the Navigator is currently showing
+                child: child,
+              ),
+            ),
+          ),
+        );
+      },
+      // Now we just pass the dashboard directly without the wrapper here
+      home: const WatchDashboard(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// UPDATED: Added targetScreen to hold the specific app widget
+class WatchWidgetData {
+  final String id;
+  final IconData icon;
+  final Color backgroundColor;
+  final Color iconColor;
+  final Widget targetScreen;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  WatchWidgetData({
+    required this.id,
+    required this.icon,
+    required this.backgroundColor,
+    required this.iconColor,
+    required this.targetScreen,
+  });
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class WatchDashboard extends StatelessWidget {
+  const WatchDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+    // UPDATED: Wiring up the specific placeholder screens
+    final List<WatchWidgetData> widgets = [
+      WatchWidgetData(
+        id: 'messages',
+        icon: Icons.chat_bubble_outline,
+        backgroundColor: const Color(0xFF1EAD36),
+        iconColor: Colors.white,
+        targetScreen: const MessagesAppScreen(), // Destination
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      WatchWidgetData(
+        id: 'weather',
+        icon: Icons.wb_sunny_outlined,
+        backgroundColor: const Color(0xFF63B4FF),
+        iconColor: Colors.yellowAccent,
+        targetScreen: const WeatherAppScreen(), // Destination
+      ),
+      WatchWidgetData(
+        id: 'health',
+        icon: Icons.favorite_border,
+        backgroundColor: const Color(0xFFFFF5F5),
+        iconColor: Colors.red,
+        targetScreen: const HealthAppScreen(), // Destination
+      ),
+      WatchWidgetData(
+        id: 'water',
+        icon: Icons.water_drop_outlined,
+        backgroundColor: const Color(0xFF0044CC),
+        iconColor: Colors.white,
+        targetScreen: const WaterAppScreen(), // Destination
+      ),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
+        ),
+        itemCount: widgets.length,
+        itemBuilder: (context, index) {
+          return WidgetButton(data: widgets[index]);
+        },
+      ),
+    );
+  }
+}
+
+class WidgetButton extends StatelessWidget {
+  final WatchWidgetData data;
+
+  const WidgetButton({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // UPDATED: Push the specific target screen instead of a generic view
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (context) => data.targetScreen));
+      },
+      child: Hero(
+        tag: data.id,
+        child: Container(
+          decoration: BoxDecoration(
+            color: data.backgroundColor,
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Center(
+            child: Icon(data.icon, color: data.iconColor, size: 40.0),
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+}
+
+// =====================================================================
+// PLACEHOLDER SCREENS
+// You will replace the internals of these with your wireframe designs
+// =====================================================================
+
+class MessagesAppScreen extends StatelessWidget {
+  const MessagesAppScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PlaceholderScreenTemplate(
+      title: 'Messages App',
+      backgroundColor: const Color(0xFF1EAD36),
+      icon: Icons.chat_bubble_outline,
+    );
+  }
+}
+
+class WeatherAppScreen extends StatelessWidget {
+  const WeatherAppScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PlaceholderScreenTemplate(
+      title: 'Weather App',
+      backgroundColor: const Color(0xFF63B4FF),
+      icon: Icons.wb_sunny_outlined,
+    );
+  }
+}
+
+class HealthAppScreen extends StatelessWidget {
+  const HealthAppScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // These variables act as placeholders for your future Rust FFI integration.
+    // Eventually, you will likely wrap this widget in a StreamBuilder or
+    // StateNotifier to listen to the live sensor data.
+    const String heartRate = '87';
+    const String bloodPressure = '120/80';
+    const String currentDate = '03/04/2026';
+    const String currentTime = '09:54:05';
+    const String dailySteps = '8,987';
+    const String distance = '~23,366';
+
+    return Scaffold(
+      backgroundColor: const Color(
+        0xFF333333,
+      ), // Dark background matching the watch face
+      body: GestureDetector(
+        // Included so you can still tap to go back during testing
+        onTap: () => Navigator.of(context).pop(),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top "Health" Title
+              const Padding(
+                padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
+                child: Text(
+                  'Health',
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+              ),
+
+              // Main Application Card
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(
+                      0xFFF2ECEC,
+                    ), // Light pinkish-off-white background
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      // Top Row: Vitals Card & Date/Time
+                      Expanded(
+                        flex: 5,
+                        child: Row(
+                          children: [
+                            // White Inner Card for Heart Rate & BP
+                            // White Inner Card for Heart Rate & BP
+                            Expanded(
+                              flex: 11,
+                              child: Container(
+                                // REDUCED PADDING: from 8.0 to 4.0 to give the text more breathing room
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                // ADDED FITTEDBOX: This prevents the yellow/black overflow tape
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Heart Rate',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ), // Added slight spacing before the icon
+                                          Icon(
+                                            Icons.favorite_border,
+                                            color: Colors.red,
+                                            size: 14,
+                                          ),
+                                        ],
+                                      ),
+                                      RichText(
+                                        text: const TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: heartRate,
+                                              style: TextStyle(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: ' BPM',
+                                              style: TextStyle(
+                                                fontSize: 9,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 2,
+                                      ), // Tiny spacer instead of relying purely on spaceEvenly
+                                      const Text(
+                                        'Blood Pressure',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      const Text(
+                                        bloodPressure,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+
+                            // Right Side: Date and Time
+                            const Expanded(
+                              flex: 9,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Today',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    currentDate,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  SizedBox(height: 2),
+                                  Text(
+                                    currentTime,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      // Bottom Row: Steps & Distance
+                      Expanded(
+                        flex: 3,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 4.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Daily Steps',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: const TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: dailySteps,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ' steps',
+                                            style: TextStyle(
+                                              fontSize: 9,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Distance',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: const TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: distance,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: ' ft',
+                                          style: TextStyle(
+                                            fontSize: 9,
+                                            color: Colors.black54,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class WaterAppScreen extends StatelessWidget {
+  const WaterAppScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PlaceholderScreenTemplate(
+      title: 'Water App',
+      backgroundColor: const Color(0xFF0044CC),
+      icon: Icons.water_drop_outlined,
+    );
+  }
+}
+
+// A reusable template for the placeholders so you can easily navigate back
+class PlaceholderScreenTemplate extends StatelessWidget {
+  final String title;
+  final Color backgroundColor;
+  final IconData icon;
+  final Color textColor;
+
+  const PlaceholderScreenTemplate({
+    super.key,
+    required this.title,
+    required this.backgroundColor,
+    required this.icon,
+    this.textColor = Colors.white,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: GestureDetector(
+        // Tap anywhere to go back to the dashboard during testing
+        onTap: () => Navigator.of(context).pop(),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: textColor, size: 40),
+              const SizedBox(height: 16),
+              Text(
+                title,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                '(Tap to go back)',
+                style: TextStyle(
+                  color: textColor.withOpacity(0.7),
+                  fontSize: 10,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
