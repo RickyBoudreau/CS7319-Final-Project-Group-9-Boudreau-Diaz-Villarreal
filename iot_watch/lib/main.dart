@@ -147,15 +147,263 @@ class WidgetButton extends StatelessWidget {
 // You will replace the internals of these with your wireframe designs
 // =====================================================================
 
+// 1. Data Model representing incoming Bluetooth/Sensor data
+class MessageData {
+  final String id;
+  final String contactName;
+  final String initial;
+  final Color avatarColor;
+  final String fullMessage; // The complete string from the sensor
+  final int unreadCount;    // Drives the red notification dot
+
+  MessageData({
+    required this.id,
+    required this.contactName,
+    required this.initial,
+    required this.avatarColor,
+    required this.fullMessage,
+    required this.unreadCount,
+  });
+}
+
+// 2. The Main Messages Screen
 class MessagesAppScreen extends StatelessWidget {
   const MessagesAppScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return PlaceholderScreenTemplate(
-      title: 'Messages App',
-      backgroundColor: const Color(0xFF1EAD36),
-      icon: Icons.chat_bubble_outline,
+    // Placeholder data acting as your "recent messages" stream from Rust/Bluetooth
+    final List<MessageData> recentMessages = [
+      MessageData(
+        id: '1',
+        contactName: 'Contact A',
+        initial: 'A',
+        avatarColor: const Color(0xFFAB47BC), // Purple
+        fullMessage: 'New Message from the backend. Please check your system logs.',
+        unreadCount: 1,
+      ),
+      MessageData(
+        id: '2',
+        contactName: 'Contact B',
+        initial: 'B',
+        avatarColor: const Color(0xFF7986CB), // Blue
+        fullMessage: 'Did you see the latest update to the wireframes?',
+        unreadCount: 0,
+      ),
+      MessageData(
+        id: '3',
+        contactName: 'Contact C',
+        initial: 'C',
+        avatarColor: const Color(0xFFC62828), // Red
+        fullMessage: 'Okay, sounds good.',
+        unreadCount: 0,
+      ),
+    ];
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF333333),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Top Title (Tap here to go back to the dashboard)
+            GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: const Padding(
+                padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.chevron_left, color: Colors.white70, size: 16),
+                    Text(
+                      'Messages',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            
+            // Main Application Card with Scrollable List
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF2ECEC), 
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                // Tighter padding to maximize list space
+                padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+                child: ListView.builder(
+                  padding: EdgeInsets.zero, // Removes default ListView padding
+                  itemCount: recentMessages.length,
+                  itemBuilder: (context, index) {
+                    final message = recentMessages[index];
+                    return ContactRowItem(message: message);
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 3. Reusable Widget for each Contact Row
+class ContactRowItem extends StatelessWidget {
+  final MessageData message;
+
+  const ContactRowItem({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to the detail screen to see the full text
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => MessageDetailScreen(message: message),
+          ),
+        );
+      },
+      child: Container(
+        color: Colors.transparent, // Ensures the whole row registers the tap
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+        child: Row(
+          children: [
+            // Colored Avatar
+            CircleAvatar(
+              radius: 16,
+              backgroundColor: message.avatarColor,
+              child: Text(
+                message.initial,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+            const SizedBox(width: 8),
+            
+            // Text Details (Name and Truncated Message)
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    message.contactName,
+                    style: const TextStyle(fontSize: 12, color: Colors.black87, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    // If there's an unread count, show 'New Message', otherwise show the actual text
+                    message.unreadCount > 0 ? 'New Message' : message.fullMessage,
+                    style: TextStyle(
+                      fontSize: 10, 
+                      color: message.unreadCount > 0 ? Colors.black87 : Colors.black54,
+                    ),
+                    maxLines: 1, // Forces the text onto a single line
+                    overflow: TextOverflow.ellipsis, // The crucial "..." truncation
+                  ),
+                ],
+              ),
+            ),
+            
+            // Optional Unread Notification Dot
+            if (message.unreadCount > 0)
+              Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Container(
+                  width: 14,
+                  height: 14,
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      message.unreadCount.toString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 4. Detail Screen to view the entire message
+class MessageDetailScreen extends StatelessWidget {
+  final MessageData message;
+
+  const MessageDetailScreen({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF333333),
+      body: GestureDetector(
+        onTap: () => Navigator.of(context).pop(), // Tap anywhere to go back
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Back Indicator
+              const Padding(
+                padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.chevron_left, color: Colors.white70, size: 16),
+                    Text('Back', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  ],
+                ),
+              ),
+              
+              // Full Message Card
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF2ECEC),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.all(12.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 12,
+                              backgroundColor: message.avatarColor,
+                              child: Text(message.initial, style: const TextStyle(color: Colors.white, fontSize: 12)),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              message.contactName,
+                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87),
+                            ),
+                          ],
+                        ),
+                        const Divider(color: Colors.grey),
+                        const SizedBox(height: 4),
+                        Text(
+                          message.fullMessage,
+                          style: const TextStyle(fontSize: 12, color: Colors.black87, height: 1.3),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
