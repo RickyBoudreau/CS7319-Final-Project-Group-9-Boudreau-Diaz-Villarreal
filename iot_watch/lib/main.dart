@@ -165,10 +165,131 @@ class WeatherAppScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlaceholderScreenTemplate(
-      title: 'Weather App',
-      backgroundColor: const Color(0xFF63B4FF),
-      icon: Icons.wb_sunny_outlined,
+    const String currentTemp = '78';
+    const String highTemp = '81';
+    const String lowTemp = '64';
+    const String barometricPressure = '734';
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF333333), 
+      body: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
+                child: Text(
+                  'Weather',
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+              ),
+              
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF2ECEC), 
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  // THE FIX: Reduced vertical padding from 12.0 to 8.0. 
+                  // This reclaims 8 total pixels of vertical space, easily fixing a 1px overflow.
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                width: 44,
+                                height: 36,
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      child: Icon(Icons.wb_sunny, color: Colors.yellow, size: 26),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Icon(Icons.cloud_outlined, color: Colors.lightBlue, size: 28),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                '$currentTemp°F',
+                                style: const TextStyle(
+                                  fontSize: 32, 
+                                  fontWeight: FontWeight.w500, 
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 2), // Slightly reduced from 4
+                          Text(
+                            'H: $highTemp° L: $lowTemp°',
+                            style: const TextStyle(
+                              fontSize: 12, 
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // THE FIX: Reduced divider height from 16 to 12.
+                      // Reclaims another 4 pixels to give the bottom text plenty of breathing room.
+                      const Divider(
+                        color: Colors.grey,
+                        thickness: 1,
+                        height: 12, 
+                      ),
+
+                      Column(
+                        children: [
+                          const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Barometric Pressure',
+                              style: TextStyle(fontSize: 10, color: Colors.black87),
+                            ),
+                          ),
+                          const SizedBox(height: 2), // Slightly reduced from 4
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: barometricPressure, 
+                                    style: const TextStyle(fontSize: 24, color: Colors.black)
+                                  ),
+                                  const TextSpan(
+                                    text: ' mmHG', 
+                                    style: TextStyle(fontSize: 12, color: Colors.black)
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
