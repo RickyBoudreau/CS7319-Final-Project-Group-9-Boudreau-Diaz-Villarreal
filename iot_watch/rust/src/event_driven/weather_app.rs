@@ -1,6 +1,6 @@
-use crate::event::Event;
-use crate::event_bus::EventBus;
-use crate::sensors::Sensors;
+use crate::event_driven::event::Event;
+use crate::event_driven::event_bus::EventBus;
+use crate::event_driven::sensors::Sensors;
 
 pub async fn run_weather_app(bus: EventBus) {
     let mut rx = bus.subscribe();

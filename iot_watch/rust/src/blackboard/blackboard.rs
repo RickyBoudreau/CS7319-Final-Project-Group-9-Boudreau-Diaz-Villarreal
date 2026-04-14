@@ -1,4 +1,4 @@
-use crate::sensor_frame::SensorFrame;
+use crate::blackboard::sensor_frame::SensorFrame;
 use std::collections::VecDeque;
 use std::thread::sleep;
 use std::time::Duration;

@@ -1,5 +1,5 @@
-use crate::event::Event;
-use crate::event_bus::EventBus;
+use crate::event_driven::event::Event;
+use crate::event_driven::event_bus::EventBus;
 
 pub struct Client {
     bus: EventBus,
@@ -34,8 +34,9 @@ impl Client {
         self.bus.publish(Event::StopMessages);
     }
 
-    pub fn open_water(&self) {
-        self.bus.publish(Event::TriggerWaterRemoval);
+pub fn open_water(&self) {
+        // CHANGED: TriggerWaterRemoval -> RequestWaterRemoval
+        self.bus.publish(Event::RequestWaterRemoval);
     }
 
     pub fn close_water(&self) {
@@ -43,6 +44,7 @@ impl Client {
     }
 
     pub fn clear_water(&self) {
-        self.bus.publish(Event::StartWaterRemoval);
+        // CHANGED: StartWaterRemoval -> ClearWater
+        self.bus.publish(Event::ClearWater);
     }
 }

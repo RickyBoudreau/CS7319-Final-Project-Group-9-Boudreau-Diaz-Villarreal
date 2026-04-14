@@ -1,10 +1,13 @@
-use flutter_rust_bridge::StreamSink;
+use crate::frb_generated::StreamSink;
 use std::thread;
 use std::time::Duration;
 
-// Updated paths to point into the blackboard subfolder
-use crate::blackboard::blackboard::Blackboard; 
+// Blackboard Imports
+use crate::blackboard::blackboard::Blackboard;
 use crate::blackboard::sensor_loader::load_sensor_queue;
+
+// Event Driven Imports (Adding these fixes the 'EventBus' and 'SensorLoader' undeclared errors)
+use crate::event_driven::event_bus::EventBus;
 use crate::event_driven::sensor_loader::SensorLoader as EventSensorLoader;
 
 // 1. THE UNIFIED DATA STRUCT
