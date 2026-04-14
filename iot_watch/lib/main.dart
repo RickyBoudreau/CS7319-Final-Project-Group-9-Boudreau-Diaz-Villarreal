@@ -10,8 +10,8 @@ Future<void> main() async {
   await RustLib.init();
 
   // THE SWAP: Comment out one, uncomment the other. That is it.
-  final sensorRepository = BlackboardAdapter();
-  // final sensorRepository = EventDrivenAdapter();
+  //final sensorRepository = BlackboardAdapter();
+  final sensorRepository = EventDrivenAdapter();
 
   runApp(IoTWatchApp(repository: sensorRepository));
 }

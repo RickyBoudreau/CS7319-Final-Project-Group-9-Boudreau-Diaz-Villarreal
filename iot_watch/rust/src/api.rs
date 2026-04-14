@@ -31,7 +31,7 @@ pub struct WatchUiState {
 
 // 2. ARCHITECTURE A: BLACKBOARD ENTRY POINT
 pub fn start_blackboard_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Result<()> {
-    let mut queue = load_sensor_queue("sensor_data.json")
+    let mut queue = load_sensor_queue("C:\\CS7319-Final-Project\\iot_watch\\rust\\src\\sensor_data.json")
         .map_err(|e| anyhow::anyhow!("Failed to load data: {}", e))?;
 
     thread::spawn(move || {
@@ -62,32 +62,31 @@ pub fn start_blackboard_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Re
 // 3. ARCHITECTURE B: EVENT-DRIVEN ENTRY POINT
 pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Result<()> {
     thread::spawn(move || {
-        // 1. The Event-Driven architecture requires a Tokio async runtime to work
         let rt = tokio::runtime::Runtime::new().unwrap();
         
         rt.block_on(async move {
-            // Initialize the Bus and the Event-specific Loader
             let bus = EventBus::new();
-            let loader = Arc::new(Mutex::new(EventSensorLoader::new("sensor_data.json")));
+            
+            // 1. THE PATH FIX: Use the exact absolute path just like Blackboard
+            let absolute_path = "C:\\CS7319-Final-Project\\iot_watch\\rust\\sensor_data.json";
+            
+            println!("Tokio: Attempting to load JSON from absolute path...");
+            let loader = Arc::new(Mutex::new(EventSensorLoader::new(absolute_path)));
+            println!("Tokio: JSON loaded successfully! Starting Sensor Manager...");
 
-            // 2. Spawn the backend sensor manager in the background
             let bus_clone = bus.clone();
             tokio::spawn(async move {
                 crate::event_driven::sensor_manager::run_sensor_manager(bus_clone, loader).await;
             });
 
-            // 3. Simulate the user opening all the apps! 
-            // In your friend's architecture, sensors stay off to save power unless an app asks for them.
             let client = Client::new(bus.clone());
             client.open_health();
             client.open_weather();
             client.open_messages();
             client.open_water();
 
-            // 4. Subscribe to the Event Bus to catch the data meant for the Flutter UI
             let mut rx = bus.subscribe();
             
-            // Local state cache to hold the latest values as events come in
             let mut hr = "--".to_string();
             let mut bp = "--/--".to_string();
             let mut steps_val = 0;
@@ -97,13 +96,15 @@ pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::
             let mut water = false;
             let mut msg: Option<String> = None;
 
-            // Timer to push the packaged UI state to Flutter every second
             let mut interval = tokio::time::interval(Duration::from_secs(1));
 
             loop {
                 tokio::select! {
-                    // Whenever an event comes through the bus, update the local cache
                     Ok(event) = rx.recv() => {
+                        // 2. THE HEARTBEAT FIX: Print every event that crosses the bus
+                        // println!("Tokio Event Received: {:?}", event); 
+                        // (You can uncomment the line above to see EVERYTHING, but it will be very spammy!)
+                        
                         if let Event::SensorData(sensor) = event {
                             match sensor {
                                 Sensors::HeartRate(v) => hr = format!("{:.0}", v),
@@ -123,20 +124,21 @@ pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::
                         }
                     }
                     
-                    // Every second, package the cache and send it across the bridge to Flutter
                     _ = interval.tick() => {
+                        // 3. PUSH CONFIRMATION
+                        println!("Tokio: Packaging state and pushing to Flutter UI...");
+                        
                         let ui_state = WatchUiState {
                             heart_rate: hr.clone(),
                             blood_pressure: bp.clone(),
                             steps: steps_val.to_string(),
-                            distance: format!("~{:.0}", dist_val * 3.28084), // Convert to feet
+                            distance: format!("~{:.0}", dist_val * 3.28084),
                             barometric_pressure: baro.clone(),
                             temperature: temp.clone(),
                             water_in_device: water,
                             latest_message: msg.clone(),
                         };
                         
-                        // Send state across the FFI boundary
                         let _ = sink.add(ui_state);
                     }
                 }
