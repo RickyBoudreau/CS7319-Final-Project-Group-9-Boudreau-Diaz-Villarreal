@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iot_watch/domain/sensor_repository.dart';
+import 'package:iot_watch/src/rust/api.dart';
 
 class HealthAppScreen extends StatelessWidget {
   final SensorRepository repository;
