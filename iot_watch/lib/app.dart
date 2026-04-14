@@ -17,21 +17,17 @@ class IoTWatchApp extends StatelessWidget {
       ),
       builder: (context, child) {
         return Scaffold(
-          backgroundColor: Colors.black, 
+          backgroundColor: Colors.black,
           body: Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(32.0), 
-              child: SizedBox(
-                width: 200,
-                height: 200,
-                child: child, 
-              ),
+              borderRadius: BorderRadius.circular(32.0),
+              child: SizedBox(width: 200, height: 200, child: child),
             ),
           ),
         );
       },
       // Pass the repository to the dashboard so it can hand it to individual screens
-      home: WatchDashboard(repository: repository), 
+      home: WatchDashboard(repository: repository),
     );
   }
 }

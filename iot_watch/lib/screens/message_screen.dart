@@ -31,8 +31,15 @@ class MessagesAppScreen extends StatelessWidget {
                     padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
                     child: Row(
                       children: [
-                        Icon(Icons.chevron_left, color: Colors.white70, size: 16),
-                        Text('Messages', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                        Icon(
+                          Icons.chevron_left,
+                          color: Colors.white70,
+                          size: 16,
+                        ),
+                        Text(
+                          'Messages',
+                          style: TextStyle(color: Colors.white70, fontSize: 14),
+                        ),
                       ],
                     ),
                   ),
@@ -68,7 +75,13 @@ class MessagesAppScreen extends StatelessWidget {
                             const CircleAvatar(
                               radius: 16,
                               backgroundColor: avatarColor,
-                              child: Text(contactInitial, style: TextStyle(color: Colors.white, fontSize: 16)),
+                              child: Text(
+                                contactInitial,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Expanded(
@@ -77,12 +90,21 @@ class MessagesAppScreen extends StatelessWidget {
                                 children: [
                                   const Text(
                                     contactName,
-                                    style: TextStyle(fontSize: 12, color: Colors.black87, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
                                     isUnread ? 'New Message' : message,
-                                    style: TextStyle(fontSize: 10, color: isUnread ? Colors.black87 : Colors.black54),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: isUnread
+                                          ? Colors.black87
+                                          : Colors.black54,
+                                    ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -91,11 +113,17 @@ class MessagesAppScreen extends StatelessWidget {
                             ),
                             if (isUnread)
                               Padding(
-                                padding: const EdgeInsets.only(left: 4.0, top: 4.0),
+                                padding: const EdgeInsets.only(
+                                  left: 4.0,
+                                  top: 4.0,
+                                ),
                                 child: Container(
                                   width: 10,
                                   height: 10,
-                                  decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
                                 ),
                               ),
                           ],
@@ -143,7 +171,10 @@ class SingleMessageDetailScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.chevron_left, color: Colors.white70, size: 16),
-                    Text('Back', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                    Text(
+                      'Back',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
                   ],
                 ),
               ),
@@ -164,15 +195,35 @@ class SingleMessageDetailScreen extends StatelessWidget {
                             CircleAvatar(
                               radius: 12,
                               backgroundColor: avatarColor,
-                              child: Text(initial, style: const TextStyle(color: Colors.white, fontSize: 12)),
+                              child: Text(
+                                initial,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
                             ),
                             const SizedBox(width: 8),
-                            Text(contactName, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87)),
+                            Text(
+                              contactName,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
                           ],
                         ),
                         const Divider(color: Colors.grey),
                         const SizedBox(height: 4),
-                        Text(fullMessage, style: const TextStyle(fontSize: 12, color: Colors.black87, height: 1.3)),
+                        Text(
+                          fullMessage,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.black87,
+                            height: 1.3,
+                          ),
+                        ),
                       ],
                     ),
                   ),

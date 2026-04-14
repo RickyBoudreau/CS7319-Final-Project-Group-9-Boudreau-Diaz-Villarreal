@@ -29,7 +29,10 @@ class HealthAppScreen extends StatelessWidget {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
-                    child: Text('Health', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                    child: Text(
+                      'Health',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
                   ),
                   Expanded(
                     child: Container(
@@ -56,26 +59,66 @@ class HealthAppScreen extends StatelessWidget {
                                       fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerLeft,
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           const Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text('Heart Rate', style: TextStyle(fontSize: 10, color: Colors.black87)),
+                                              Text(
+                                                'Heart Rate',
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
                                               SizedBox(width: 4),
-                                              Icon(Icons.favorite_border, color: Colors.red, size: 14),
+                                              Icon(
+                                                Icons.favorite_border,
+                                                color: Colors.red,
+                                                size: 14,
+                                              ),
                                             ],
                                           ),
                                           RichText(
-                                            text: TextSpan(children: [
-                                              TextSpan(text: heartRate, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.black)),
-                                              const TextSpan(text: ' BPM', style: TextStyle(fontSize: 9, color: Colors.black54)),
-                                            ]),
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: heartRate,
+                                                  style: const TextStyle(
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                const TextSpan(
+                                                  text: ' BPM',
+                                                  style: TextStyle(
+                                                    fontSize: 9,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           const SizedBox(height: 2),
-                                          const Text('Blood Pressure', style: TextStyle(fontSize: 10, color: Colors.black87)),
-                                          Text(bloodPressure, style: const TextStyle(fontSize: 18, color: Colors.black)),
+                                          const Text(
+                                            'Blood Pressure',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                          Text(
+                                            bloodPressure,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -87,9 +130,22 @@ class HealthAppScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text('Today', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
+                                      Text(
+                                        'Today',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
                                       SizedBox(height: 6),
-                                      Text('Live Sync', style: TextStyle(fontSize: 11, color: Colors.black87)),
+                                      Text(
+                                        'Live Sync',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -105,18 +161,40 @@ class HealthAppScreen extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        const Text('Daily Steps', style: TextStyle(fontSize: 10, color: Colors.black87)),
+                                        const Text(
+                                          'Daily Steps',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
                                         FittedBox(
                                           fit: BoxFit.scaleDown,
                                           alignment: Alignment.centerLeft,
                                           child: RichText(
-                                            text: TextSpan(children: [
-                                              TextSpan(text: steps, style: const TextStyle(fontSize: 16, color: Colors.black)),
-                                              const TextSpan(text: ' steps', style: TextStyle(fontSize: 9, color: Colors.black54)),
-                                            ]),
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: steps,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                const TextSpan(
+                                                  text: ' steps',
+                                                  style: TextStyle(
+                                                    fontSize: 9,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -125,18 +203,39 @@ class HealthAppScreen extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Text('Distance', style: TextStyle(fontSize: 10, color: Colors.black87)),
+                                      const Text(
+                                        'Distance',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
                                       FittedBox(
                                         fit: BoxFit.scaleDown,
                                         alignment: Alignment.centerLeft,
                                         child: RichText(
-                                          text: TextSpan(children: [
-                                            TextSpan(text: distance, style: const TextStyle(fontSize: 16, color: Colors.black)),
-                                            const TextSpan(text: ' ft', style: TextStyle(fontSize: 9, color: Colors.black54)),
-                                          ]),
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: distance,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const TextSpan(
+                                                text: ' ft',
+                                                style: TextStyle(
+                                                  fontSize: 9,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -144,7 +243,7 @@ class HealthAppScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
