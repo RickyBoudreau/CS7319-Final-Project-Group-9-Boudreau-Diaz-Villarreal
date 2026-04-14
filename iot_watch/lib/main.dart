@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:iot_watch/src/rust/frb_generated.dart'; 
 import 'package:iot_watch/domain/blackboard_adapter.dart';
-import '../rust/src/event_driven_adapter.dart';
+import 'package:iot_watch/domain/event_driven_adapter.dart';
 import 'package:iot_watch/app.dart';
 
 Future<void> main() async {

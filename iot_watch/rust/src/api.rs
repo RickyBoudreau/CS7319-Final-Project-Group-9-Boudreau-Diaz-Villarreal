@@ -1,12 +1,11 @@
-// rust/src/api.rs
 use flutter_rust_bridge::StreamSink;
 use std::thread;
 use std::time::Duration;
 
-// Import shared loader and both architectures
-use crate::shared_models::sensor_loader::load_sensor_queue;
-use crate::blackboard::blackboard_core::Blackboard;
-use crate::event_driven::event_bus::EventBus;
+// Updated paths to point into the blackboard subfolder
+use crate::blackboard::blackboard::Blackboard; 
+use crate::blackboard::sensor_loader::load_sensor_queue;
+use crate::event_driven::sensor_loader::SensorLoader as EventSensorLoader;
 
 // 1. THE UNIFIED DATA STRUCT
 // Both architectures will populate this exact same struct to send to Flutter.
