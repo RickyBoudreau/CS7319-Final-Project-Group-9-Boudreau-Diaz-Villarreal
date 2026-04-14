@@ -2,9 +2,11 @@ use std::collections::HashSet;
 use tokio::sync::Mutex;
 use std::sync::Arc;
 use std::time::Duration;
+
+// Updated to include event_driven::
 use crate::event_driven::event::Event;
 use crate::event_driven::event_bus::EventBus;
-use crate::event_driven::sensors::Sensors;
+use crate::event_driven::sensor_loader::SensorLoader;
 
 pub async fn run_sensor_manager(bus: EventBus, loader: Arc<Mutex<SensorLoader>>) {
     let mut rx = bus.subscribe();

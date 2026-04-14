@@ -9,6 +9,11 @@ use crate::blackboard::sensor_loader::load_sensor_queue;
 // Event Driven Imports (Adding these fixes the 'EventBus' and 'SensorLoader' undeclared errors)
 use crate::event_driven::event_bus::EventBus;
 use crate::event_driven::sensor_loader::SensorLoader as EventSensorLoader;
+use std::sync::Arc;
+use tokio::sync::Mutex;
+use crate::event_driven::client::Client;
+use crate::event_driven::event::Event;
+use crate::event_driven::sensors::Sensors;
 
 // 1. THE UNIFIED DATA STRUCT
 // Both architectures will populate this exact same struct to send to Flutter.
@@ -56,35 +61,88 @@ pub fn start_blackboard_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Re
 
 // 3. ARCHITECTURE B: EVENT-DRIVEN ENTRY POINT
 pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Result<()> {
-    let mut queue = load_sensor_queue("sensor_data.json")
-        .map_err(|e| anyhow::anyhow!("Failed to load data: {}", e))?;
-
     thread::spawn(move || {
-        // Initialize your Event Bus and Subscribers here
-        let mut event_bus = EventBus::new();
+        // 1. The Event-Driven architecture requires a Tokio async runtime to work
+        let rt = tokio::runtime::Runtime::new().unwrap();
         
-        while let Some(frame) = queue.pop_front() {
-            // Publish frame data to the event bus
-            event_bus.publish_frame(frame);
-            
-            // 2. Query your localized states/subscribers
-            let hr_state = event_bus.get_subscriber("heart_rate").get_value();
-            
-            // 3. Map the Event state to the EXACT SAME WatchUiState
-            let ui_state = WatchUiState {
-                heart_rate: "--".to_string(), // Replace with hr_state
-                blood_pressure: "--/--".to_string(),
-                steps: "--".to_string(),
-                distance: "--".to_string(),
-                barometric_pressure: "--".to_string(),
-                temperature: "--".to_string(),
-                water_in_device: false,
-                latest_message: None,
-            };
+        rt.block_on(async move {
+            // Initialize the Bus and the Event-specific Loader
+            let bus = EventBus::new();
+            let loader = Arc::new(Mutex::new(EventSensorLoader::new("sensor_data.json")));
 
-            sink.add(ui_state);
-            thread::sleep(Duration::from_secs(1));
-        }
+            // 2. Spawn the backend sensor manager in the background
+            let bus_clone = bus.clone();
+            tokio::spawn(async move {
+                crate::event_driven::sensor_manager::run_sensor_manager(bus_clone, loader).await;
+            });
+
+            // 3. Simulate the user opening all the apps! 
+            // In your friend's architecture, sensors stay off to save power unless an app asks for them.
+            let client = Client::new(bus.clone());
+            client.open_health();
+            client.open_weather();
+            client.open_messages();
+            client.open_water();
+
+            // 4. Subscribe to the Event Bus to catch the data meant for the Flutter UI
+            let mut rx = bus.subscribe();
+            
+            // Local state cache to hold the latest values as events come in
+            let mut hr = "--".to_string();
+            let mut bp = "--/--".to_string();
+            let mut steps_val = 0;
+            let mut dist_val = 0.0;
+            let mut baro = "--".to_string();
+            let mut temp = "--".to_string();
+            let mut water = false;
+            let mut msg: Option<String> = None;
+
+            // Timer to push the packaged UI state to Flutter every second
+            let mut interval = tokio::time::interval(Duration::from_secs(1));
+
+            loop {
+                tokio::select! {
+                    // Whenever an event comes through the bus, update the local cache
+                    Ok(event) = rx.recv() => {
+                        if let Event::SensorData(sensor) = event {
+                            match sensor {
+                                Sensors::HeartRate(v) => hr = format!("{:.0}", v),
+                                Sensors::BloodPressure(v) => bp = v,
+                                Sensors::Steps(v) => steps_val += v, 
+                                Sensors::DistanceTraveled(v) => dist_val += v, 
+                                Sensors::BarometricPressure(v) => baro = format!("{:.2}", v),
+                                Sensors::Temperature(v) => temp = format!("{:.1}", v),
+                                Sensors::WaterDetected(v) => water = v,
+                                Sensors::Bluetooth(v) => {
+                                    if v != "NONE" {
+                                        msg = Some(v);
+                                    }
+                                }
+                                _ => {}
+                            }
+                        }
+                    }
+                    
+                    // Every second, package the cache and send it across the bridge to Flutter
+                    _ = interval.tick() => {
+                        let ui_state = WatchUiState {
+                            heart_rate: hr.clone(),
+                            blood_pressure: bp.clone(),
+                            steps: steps_val.to_string(),
+                            distance: format!("~{:.0}", dist_val * 3.28084), // Convert to feet
+                            barometric_pressure: baro.clone(),
+                            temperature: temp.clone(),
+                            water_in_device: water,
+                            latest_message: msg.clone(),
+                        };
+                        
+                        // Send state across the FFI boundary
+                        let _ = sink.add(ui_state);
+                    }
+                }
+            }
+        });
     });
+
     Ok(())
 }
