@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="azwmgKz8kL6E7u2IUb9h">
+    <mxGraphModel dx="1720" dy="1047" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-1" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=29.818181818181817;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="SensorFrame" vertex="1">
+          <mxGeometry height="337.8181818181818" width="301" x="410" y="934" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-2" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+f64 heart_rate" vertex="1">
+          <mxGeometry height="30" width="301" y="29.818181818181817" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-3" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+String blood_pressure" vertex="1">
+          <mxGeometry height="30" width="301" y="59.81818181818181" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-4" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+f64 barometric_pressure" vertex="1">
+          <mxGeometry height="30" width="301" y="89.81818181818181" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-5" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+f64 distance_traveled" vertex="1">
+          <mxGeometry height="30" width="301" y="119.81818181818181" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-6" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+i64 steps_taken" vertex="1">
+          <mxGeometry height="30" width="301" y="149.8181818181818" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-7" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+f64 time" vertex="1">
+          <mxGeometry height="30" width="301" y="179.8181818181818" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-8" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+f64 temperature_outside" vertex="1">
+          <mxGeometry height="30" width="301" y="209.8181818181818" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-9" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+String bluetooth_transmissions" vertex="1">
+          <mxGeometry height="30" width="301" y="239.8181818181818" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-10" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+bool water_in_device" vertex="1">
+          <mxGeometry height="30" width="301" y="269.8181818181818" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-11" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1">
+          <mxGeometry height="8" width="301" y="299.8181818181818" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-12" parent="iEZ5IfeJMjIBA0JJGDTo-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+default() : SensorFrame" vertex="1">
+          <mxGeometry height="30" width="301" y="307.8181818181818" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-13" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="Blackboard" vertex="1">
+          <mxGeometry height="840" width="458" x="20" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-14" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-Vec&lt;f64&gt; heart_rate" vertex="1">
+          <mxGeometry height="26" width="458" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-15" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-Vec&lt;String&gt; blood_pressure" vertex="1">
+          <mxGeometry height="26" width="458" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-16" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-Vec&lt;f64&gt; barometric_pressure" vertex="1">
+          <mxGeometry height="26" width="458" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-17" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-Vec&lt;f64&gt; distance_traveled" vertex="1">
+          <mxGeometry height="26" width="458" y="104" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-18" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-Vec&lt;i64&gt; steps_taken" vertex="1">
+          <mxGeometry height="26" width="458" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-19" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-Vec&lt;f64&gt; time" vertex="1">
+          <mxGeometry height="26" width="458" y="156" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-20" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-Vec&lt;f64&gt; temperature_outside" vertex="1">
+          <mxGeometry height="26" width="458" y="182" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-21" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-Vec&lt;String&gt; bluetooth_transmissions" vertex="1">
+          <mxGeometry height="26" width="458" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-22" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-bool water_in_device" vertex="1">
+          <mxGeometry height="26" width="458" y="234" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-23" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-bool water_removed_before" vertex="1">
+          <mxGeometry height="26" width="458" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-24" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-i32 total_power" vertex="1">
+          <mxGeometry height="26" width="458" y="286" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-25" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="-i32 power_consumption_per_second" vertex="1">
+          <mxGeometry height="26" width="458" y="312" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-26" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1">
+          <mxGeometry height="8" width="458" y="338" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-27" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+new() : Blackboard" vertex="1">
+          <mxGeometry height="26" width="458" y="346" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-28" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ingest_queue(queue: &amp;mut VecDeque&lt;SensorFrame&gt;)" vertex="1">
+          <mxGeometry height="26" width="458" y="372" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-29" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+apply_frame(frame: SensorFrame)" vertex="1">
+          <mxGeometry height="26" width="458" y="398" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-30" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+clear_device_water()" vertex="1">
+          <mxGeometry height="26" width="458" y="424" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-31" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_heart_rate() : Option&lt;f64&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-32" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_blood_pressure() : Option&lt;String&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="476" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-33" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_barometric_pressure() : Option&lt;f64&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="502" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-34" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_time() : Option&lt;f64&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="528" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-35" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_temperature_outside() : Option&lt;f64&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="554" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-36" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_water_in_device() : bool" vertex="1">
+          <mxGeometry height="26" width="458" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-37" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_distance_traveled() : f64" vertex="1">
+          <mxGeometry height="26" width="458" y="606" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-38" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_steps_taken() : i64" vertex="1">
+          <mxGeometry height="26" width="458" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-39" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_bluetooth_transmissions() : Vec&lt;String&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="658" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-40" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_power_level() : i32" vertex="1">
+          <mxGeometry height="26" width="458" y="684" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-41" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_all_heart_rate() : &amp;Vec&lt;f64&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-42" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_all_blood_pressure() : &amp;Vec&lt;String&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="736" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-43" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_all_barometric_pressure() : &amp;Vec&lt;f64&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="762" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-44" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_all_time() : &amp;Vec&lt;f64&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="788" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-45" parent="iEZ5IfeJMjIBA0JJGDTo-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+get_all_temperature_outside() : &amp;Vec&lt;f64&gt;" vertex="1">
+          <mxGeometry height="26" width="458" y="814" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-46" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=47.2;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="SensorLoader" vertex="1">
+          <mxGeometry height="102.2" width="687" x="528" y="377" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-47" parent="iEZ5IfeJMjIBA0JJGDTo-46" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1">
+          <mxGeometry height="8" width="687" y="47.2" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-48" parent="iEZ5IfeJMjIBA0JJGDTo-46" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+load_sensor_queue(path: &amp;str) : Result&lt;VecDeque&lt;SensorFrame&lt;~, Box&gt;dyn Error&gt;&gt;" vertex="1">
+          <mxGeometry height="47" width="687" y="55.2" as="geometry" />
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-49" edge="1" parent="1" source="iEZ5IfeJMjIBA0JJGDTo-13" style="curved=1;dashed=1;startArrow=none;endArrow=open;endSize=12;exitX=0.5;exitY=1;entryX=0;entryY=0.21;rounded=0;" target="iEZ5IfeJMjIBA0JJGDTo-1" value="uses">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="249" y="897" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iEZ5IfeJMjIBA0JJGDTo-50" edge="1" parent="1" source="iEZ5IfeJMjIBA0JJGDTo-46" style="curved=1;dashed=1;startArrow=none;endArrow=open;endSize=12;exitX=0.5;exitY=1;entryX=1;entryY=0.21;rounded=0;" target="iEZ5IfeJMjIBA0JJGDTo-1" value="creates">
+          <mxGeometry relative="1" x="0.0178" y="-31" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="871" y="897" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

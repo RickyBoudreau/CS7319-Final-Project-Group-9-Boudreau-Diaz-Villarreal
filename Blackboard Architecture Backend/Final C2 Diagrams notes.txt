@@ -1,0 +1,7 @@
+Solid arrow (→) – Request flowing upward (e.g., “get data”, “perform computation”)
+
+Dashed arrow (-->) – Notification flowing downward (e.g., “something changed”, “event occurred”)
+
+Solid line without arrow (—) – Static attachment between a component and a connector (direction is implied by the arrowed lines on the same attachment)
+
+No direct component-to-component line – Enforces C2’s rule: all communication goes through connectors
