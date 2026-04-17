@@ -9,9 +9,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await RustLib.init();
 
-  // THE SWAP: Comment out one, uncomment the other. That is it.
-  //final sensorRepository = BlackboardAdapter();
-  final sensorRepository = EventDrivenAdapter();
+  //THE SWAP: Comment out one, uncomment the other. That is it.
+  final sensorRepository = BlackboardAdapter();
+  // final sensorRepository = EventDrivenAdapter();
 
   runApp(IoTWatchApp(repository: sensorRepository));
 }
