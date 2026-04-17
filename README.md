@@ -26,6 +26,11 @@ TODO
 TODO
 
 ## Detailed Explanation of Differences in the Architectural Styles Selected
+### Blackboard Implementation
+Blah blah Ricky writes here
+
+### Event-Driven Implementation
+However, in contrast to the blackboard implementation, the event-driven design... TODO (rubric wants a lot of talk about specifics about the actual code)
 
 ## Detailed Explanation of Rationale Behind Final Architecture Selection
 After careful review of the data gathered during development and experimentation with our system, we have determined the blackboard architecture to be the most effective at meeting our IOT wearable's real-world needs. 
