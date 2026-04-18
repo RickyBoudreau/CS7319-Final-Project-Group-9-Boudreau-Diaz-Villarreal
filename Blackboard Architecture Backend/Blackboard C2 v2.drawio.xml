@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
   <diagram name="Page-1" id="EpQ_IgrEhfwRjfzrdyRN">
-    <mxGraphModel dx="1106" dy="673" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1384" dy="1190" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -14,7 +13,7 @@
         <mxCell id="pFl6glRvdBqwzjFSSalO-3" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=#BBDEFB;strokeColor=#0D47A1;fontColor=light-dark(#333333,#cccccc);" value="Top Layer (Presentation / Control)" vertex="1">
           <mxGeometry height="128" width="786" x="20" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="pFl6glRvdBqwzjFSSalO-4" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="Display / Console UI&#xa;Prints sensor data &amp;amp; power" vertex="1">
+        <mxCell id="pFl6glRvdBqwzjFSSalO-4" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="Flutter UI&#xa;Displays the  sensor data pulled in resective apps" vertex="1">
           <mxGeometry height="78" width="253" x="40" y="45" as="geometry" />
         </mxCell>
         <mxCell id="pFl6glRvdBqwzjFSSalO-5" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="Water Clearance Trigger&#xa;Clears water at second 30" vertex="1">
