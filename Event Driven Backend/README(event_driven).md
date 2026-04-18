@@ -24,8 +24,7 @@ are the publishers.
 It triggers or starts the sensors to be active when the user
 interacts with the related app, loads the JSON simulated data
 snapshots, and publishes that loaded JSON sensor data.
-- The Client is a simulation of the UI actions (*to be replaced/removed)
-It opens and closes apps like a user would and triggers the clear water
+- The Client is an api for the UI. It calls the appropriate high level functions like opens and closing apps like a user would and triggers the clear water
 button.
 - The SensorLoader reads 1 second of data from the JSON file
 at a time (this depends on when the sensor is triggered).
@@ -36,7 +35,7 @@ WaterRemovalApp.
   - The Message App requests data from 1 sensor
   - The Weather App requests data from 1 sensor
 
-Each app maintains its own temporary state while it is open:
+Each app maintains its own temporary state while it is open to set the relative sensors to be active. It also has its own defined variables to track water being cleared, total steps, total distance and all messages.
 - Health: total (cumulative) steps, total (cumulative) distance, heart rate, blood pressure and time
 - Weather: temperature and barometric pressure
 - Messages: all Bluetooth messages
