@@ -22,11 +22,19 @@ While we discuss more in-depth the differences between our styles below, this se
 
 ## Compilation and Implementation Instructions
 ### Compilation and Implementation Platform
-TODO
+The Flutter Application "iot_watch" holds both architectures because the backend architecture and the frontend was built using the Flutter_Rust_Bridge_Codegen module making Rust backend and the Flutter/Dart frontend connect easy. 
+
+Prior to compilation you will need the Flutter and Rust SDK to run the commands in the terminal. The latest versions are preferable.
+
+To switch between the two architectures for compilation and test purposes you will need to change in iot_watch/lib/main.dart line 13 or 14. Whichever is uncommented uses that architecture and whichever is commented does not use it. 
+
 ### How to Compile Our Code
-TODO
-### How to Execute Our Code
-TODO
+To build and run the application follow these steps:
+
+1. cd iot_watch
+
+2. flutter run
+
 
 ## Detailed Explanation of Differences in the Architectural Styles Selected
 ### Blackboard Implementation
