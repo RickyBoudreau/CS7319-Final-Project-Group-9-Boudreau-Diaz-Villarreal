@@ -72,10 +72,17 @@ class WatchDashboard extends StatelessWidget {
         itemBuilder: (context, index) {
           final data = widgets[index];
           return GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
+            onTap: () async {
+              // 1. Tell Rust the app is opening
+              repository.openApp(data.id);
+              
+              // 2. Wait while the user is inside the app
+              await Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => data.targetScreen),
               );
+              
+              // 3. Tell Rust the app closed when they pop back to the dashboard
+              repository.closeApp(data.id);
             },
             child: Hero(
               tag: data.id,

@@ -1,22 +1,25 @@
-use crate::frb_generated::StreamSink;
+use std::sync::Arc;
+use tokio::sync::Mutex;
+use std::sync::OnceLock;
 use std::thread;
 use std::time::Duration;
+use crate::frb_generated::StreamSink;
 
 // Blackboard Imports
 use crate::blackboard::blackboard::Blackboard;
 use crate::blackboard::sensor_loader::load_sensor_queue;
 
-// Event Driven Imports (Adding these fixes the 'EventBus' and 'SensorLoader' undeclared errors)
+// Event Driven Imports
 use crate::event_driven::event_bus::EventBus;
 use crate::event_driven::sensor_loader::SensorLoader as EventSensorLoader;
-use std::sync::Arc;
-use tokio::sync::Mutex;
 use crate::event_driven::client::Client;
 use crate::event_driven::event::Event;
 use crate::event_driven::sensors::Sensors;
 
-// 1. THE UNIFIED DATA STRUCT
-// Both architectures will populate this exact same struct to send to Flutter.
+// Create a global lock for the EventBus
+static GLOBAL_BUS: OnceLock<EventBus> = OnceLock::new();
+
+// The Unified UI State
 #[derive(Clone, Debug)]
 pub struct WatchUiState {
     pub heart_rate: String,
@@ -29,6 +32,31 @@ pub struct WatchUiState {
     pub latest_message: Option<String>,
 }
 
+pub fn notify_app_opened(app_id: String) {
+    if let Some(bus) = GLOBAL_BUS.get() {
+        let client = Client::new(bus.clone());
+        match app_id.as_str() {
+            "health" => client.open_health(),
+            "weather" => client.open_weather(),
+            "messages" => client.open_messages(),
+            "water" => client.open_water(),
+            _ => {}
+        }
+    }
+}
+
+pub fn notify_app_closed(app_id: String) {
+    if let Some(bus) = GLOBAL_BUS.get() {
+        let client = Client::new(bus.clone());
+        match app_id.as_str() {
+            "health" => client.close_health(),
+            "weather" => client.close_weather(),
+            "messages" => client.close_messages(),
+            "water" => client.close_water(),
+            _ => {}
+        }
+    }
+}
 // 2. ARCHITECTURE A: BLACKBOARD ENTRY POINT
 pub fn start_blackboard_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Result<()> {
     let mut queue = load_sensor_queue("C:\\CS7319-Final-Project\\iot_watch\\rust\\src\\sensor_data.json")
@@ -61,29 +89,42 @@ pub fn start_blackboard_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Re
 
 // 3. ARCHITECTURE B: EVENT-DRIVEN ENTRY POINT
 pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Result<()> {
-    thread::spawn(move || {
+    std::thread::spawn(move || {
         let rt = tokio::runtime::Runtime::new().unwrap();
         
         rt.block_on(async move {
             let bus = EventBus::new();
             
-            // 1. THE PATH FIX: Use the exact absolute path just like Blackboard
-            let absolute_path = "C:\\CS7319-Final-Project\\iot_watch\\rust\\sensor_data.json";
+            // Store the bus globally so `notify_app_opened` can access it!
+            let _ = GLOBAL_BUS.set(bus.clone()); 
             
-            println!("Tokio: Attempting to load JSON from absolute path...");
+            let absolute_path = "C:\\CS7319-Final-Project\\iot_watch\\rust\\src\\sensor_data.json";
             let loader = Arc::new(Mutex::new(EventSensorLoader::new(absolute_path)));
-            println!("Tokio: JSON loaded successfully! Starting Sensor Manager...");
 
             let bus_clone = bus.clone();
             tokio::spawn(async move {
                 crate::event_driven::sensor_manager::run_sensor_manager(bus_clone, loader).await;
             });
 
-            let client = Client::new(bus.clone());
-            client.open_health();
-            client.open_weather();
-            client.open_messages();
-            client.open_water();
+            let bus_health = bus.clone();
+            tokio::spawn(async move {
+                crate::event_driven::health_app::run_health_app(bus_health).await;
+            });
+
+            let bus_weather = bus.clone();
+            tokio::spawn(async move {
+                crate::event_driven::weather_app::run_weather_app(bus_weather).await;
+            });
+
+            let bus_msg = bus.clone();
+            tokio::spawn(async move {
+                crate::event_driven::message_app::run_message_app(bus_msg).await;
+            });
+
+            let bus_water = bus.clone();
+            tokio::spawn(async move {
+                crate::event_driven::water_removal_app::run_water_removal_app(bus_water).await;
+            });
 
             let mut rx = bus.subscribe();
             
@@ -96,15 +137,11 @@ pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::
             let mut water = false;
             let mut msg: Option<String> = None;
 
-            let mut interval = tokio::time::interval(Duration::from_secs(1));
+            let mut interval = tokio::time::interval(std::time::Duration::from_secs(1));
 
             loop {
                 tokio::select! {
                     Ok(event) = rx.recv() => {
-                        // 2. THE HEARTBEAT FIX: Print every event that crosses the bus
-                        // println!("Tokio Event Received: {:?}", event); 
-                        // (You can uncomment the line above to see EVERYTHING, but it will be very spammy!)
-                        
                         if let Event::SensorData(sensor) = event {
                             match sensor {
                                 Sensors::HeartRate(v) => hr = format!("{:.0}", v),
@@ -125,9 +162,6 @@ pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::
                     }
                     
                     _ = interval.tick() => {
-                        // 3. PUSH CONFIRMATION
-                        println!("Tokio: Packaging state and pushing to Flutter UI...");
-                        
                         let ui_state = WatchUiState {
                             heart_rate: hr.clone(),
                             blood_pressure: bp.clone(),
@@ -138,7 +172,6 @@ pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::
                             water_in_device: water,
                             latest_message: msg.clone(),
                         };
-                        
                         let _ = sink.add(ui_state);
                     }
                 }

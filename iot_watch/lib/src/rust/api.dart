@@ -8,6 +8,12 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
 
+Future<void> notifyAppOpened({required String appId}) =>
+    RustLib.instance.api.crateApiNotifyAppOpened(appId: appId);
+
+Future<void> notifyAppClosed({required String appId}) =>
+    RustLib.instance.api.crateApiNotifyAppClosed(appId: appId);
+
 Stream<WatchUiState> startBlackboardSimulation() =>
     RustLib.instance.api.crateApiStartBlackboardSimulation();
 
