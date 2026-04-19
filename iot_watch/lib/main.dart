@@ -11,7 +11,7 @@ Future<void> main() async {
 
   //THE SWAP: Comment out one, uncomment the other. That is it.
   final sensorRepository = BlackboardAdapter();
-  // final sensorRepository = EventDrivenAdapter();
+  //final sensorRepository = EventDrivenAdapter();
 
   runApp(IoTWatchApp(repository: sensorRepository));
 }
