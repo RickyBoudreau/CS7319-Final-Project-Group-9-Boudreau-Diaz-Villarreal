@@ -22,4 +22,3 @@ impl EventBus {
         self.sender.subscribe()
     }
 }
-

@@ -5,7 +5,7 @@ use std::time::Duration;
 
 pub const SIMULATE_REALTIME: bool = true;  // Set to true for real-time simulation
 
-pub struct blackboard {
+pub struct Blackboard {
     heart_rate: Vec<f64>,
     blood_pressure: Vec<String>,
     barometric_pressure: Vec<f64>,
@@ -21,7 +21,7 @@ pub struct blackboard {
     power_consumption_per_second: i32,
 }
 
-impl blackboard {
+impl Blackboard {
     pub fn new() -> Self {
         Self {
             heart_rate: Vec::new(),

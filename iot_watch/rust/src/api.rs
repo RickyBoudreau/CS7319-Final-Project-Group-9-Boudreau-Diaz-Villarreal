@@ -5,7 +5,7 @@ use std::thread;
 use std::time::Duration;
 use crate::frb_generated::StreamSink;
 
-// blackboard Imports
+// Blackboard Imports
 use crate::blackboard::blackboard::Blackboard;
 use crate::blackboard::sensor_loader::load_sensor_queue;
 
@@ -57,18 +57,18 @@ pub fn notify_app_closed(app_id: String) {
         }
     }
 }
-// 2. ARCHITECTURE A: blackboard ENTRY POINT
+// 2. ARCHITECTURE A: BLACKBOARD ENTRY POINT
 pub fn start_blackboard_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Result<()> {
     let mut queue = load_sensor_queue("C:\\CS7319-Final-Project\\iot_watch\\rust\\src\\sensor_data.json")
         .map_err(|e| anyhow::anyhow!("Failed to load data: {}", e))?;
 
     thread::spawn(move || {
-        let mut blackboard = blackboard::new();
+        let mut blackboard = Blackboard::new();
         // ... (Your while loop logic here) ...
         while let Some(frame) = queue.pop_front() {
             blackboard.apply_frame(frame);
             
-            // Map blackboard state to WatchUiState
+            // Map Blackboard state to WatchUiState
             let ui_state = WatchUiState {
                 heart_rate: blackboard.get_heart_rate().map(|v| format!("{:.0}", v)).unwrap_or_else(|| "--".to_string()),
                 blood_pressure: blackboard.get_blood_pressure().unwrap_or_else(|| "--/--".to_string()),
