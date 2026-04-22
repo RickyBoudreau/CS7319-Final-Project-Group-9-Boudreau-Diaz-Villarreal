@@ -1,5 +1,5 @@
-use crate::Unselected::event::Event;
-use crate::Unselected::event_bus::EventBus;
+use crate::event_driven::event::Event;
+use crate::event_driven::event_bus::EventBus;
 
 pub struct Client {
     bus: EventBus,

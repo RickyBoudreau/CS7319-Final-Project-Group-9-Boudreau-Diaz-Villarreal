@@ -1,6 +1,6 @@
-use crate::Unselected::event::Event;
-use crate::Unselected::event_bus::EventBus;
-use crate::Unselected::sensors::Sensors;
+use crate::event_driven::event::Event;
+use crate::event_driven::event_bus::EventBus;
+use crate::event_driven::sensors::Sensors;
 
 pub async fn run_message_app(bus: EventBus) {
     let mut rx = bus.subscribe();

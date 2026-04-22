@@ -3,9 +3,9 @@ use tokio::sync::Mutex;
 use std::sync::Arc;
 use std::time::Duration;
 
-use crate::Unselected::event::Event;
-use crate::Unselected::event_bus::EventBus;
-use crate::Unselected::sensor_loader::SensorLoader;
+use crate::event_Driven::event::Event;
+use crate::event_Driven::event_bus::EventBus;
+use crate::event_Driven::sensor_loader::SensorLoader;
 
 pub async fn run_sensor_manager(bus: EventBus, loader: Arc<Mutex<SensorLoader>>) {
     let mut rx = bus.subscribe();

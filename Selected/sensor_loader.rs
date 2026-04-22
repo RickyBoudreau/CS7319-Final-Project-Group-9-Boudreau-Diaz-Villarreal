@@ -1,4 +1,4 @@
-use crate::Selected::sensor_frame::SensorFrame;
+use crate::blackboard::sensor_frame::SensorFrame;
 use serde_json::Value;
 use std::collections::VecDeque;
 use std::error::Error;

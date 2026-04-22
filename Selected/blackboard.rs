@@ -1,11 +1,11 @@
-use crate::Selected::sensor_frame::SensorFrame;
+use crate::blackboard::sensor_frame::SensorFrame;
 use std::collections::VecDeque;
 use std::thread::sleep;
 use std::time::Duration;
 
 pub const SIMULATE_REALTIME: bool = true;  // Set to true for real-time simulation
 
-pub struct Selected {
+pub struct blackboard {
     heart_rate: Vec<f64>,
     blood_pressure: Vec<String>,
     barometric_pressure: Vec<f64>,
@@ -21,7 +21,7 @@ pub struct Selected {
     power_consumption_per_second: i32,
 }
 
-impl Selected {
+impl blackboard {
     pub fn new() -> Self {
         Self {
             heart_rate: Vec::new(),

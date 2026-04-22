@@ -5,16 +5,16 @@ use std::thread;
 use std::time::Duration;
 use crate::frb_generated::StreamSink;
 
-// Selected Imports
-use crate::Selected::Selected::Blackboard;
-use crate::Selected::sensor_loader::load_sensor_queue;
+// blackboard Imports
+use crate::blackboard::blackboard::Blackboard;
+use crate::blackboard::sensor_loader::load_sensor_queue;
 
 // Event Driven Imports
-use crate::Unselected::event_bus::EventBus;
-use crate::Unselected::sensor_loader::SensorLoader as EventSensorLoader;
-use crate::Unselected::client::Client;
-use crate::Unselected::event::Event;
-use crate::Unselected::sensors::Sensors;
+use crate::event_driven::event_bus::EventBus;
+use crate::event_driven::sensor_loader::SensorLoader as EventSensorLoader;
+use crate::event_driven::client::Client;
+use crate::event_driven::event::Event;
+use crate::event_driven::sensors::Sensors;
 
 // Create a global lock for the EventBus
 static GLOBAL_BUS: OnceLock<EventBus> = OnceLock::new();
@@ -57,27 +57,27 @@ pub fn notify_app_closed(app_id: String) {
         }
     }
 }
-// 2. ARCHITECTURE A: Selected ENTRY POINT
+// 2. ARCHITECTURE A: blackboard ENTRY POINT
 pub fn start_blackboard_simulation(sink: StreamSink<WatchUiState>) -> anyhow::Result<()> {
     let mut queue = load_sensor_queue("C:\\CS7319-Final-Project\\iot_watch\\rust\\src\\sensor_data.json")
         .map_err(|e| anyhow::anyhow!("Failed to load data: {}", e))?;
 
     thread::spawn(move || {
-        let mut Selected = Selected::new();
+        let mut blackboard = blackboard::new();
         // ... (Your while loop logic here) ...
         while let Some(frame) = queue.pop_front() {
-            Selected.apply_frame(frame);
+            blackboard.apply_frame(frame);
             
-            // Map Selected state to WatchUiState
+            // Map blackboard state to WatchUiState
             let ui_state = WatchUiState {
-                heart_rate: Selected.get_heart_rate().map(|v| format!("{:.0}", v)).unwrap_or_else(|| "--".to_string()),
-                blood_pressure: Selected.get_blood_pressure().unwrap_or_else(|| "--/--".to_string()),
-                steps: Selected.get_steps_taken().to_string(),
-                distance: format!("~{:.0}", Selected.get_distance_traveled() * 3.28084),
-                barometric_pressure: Selected.get_barometric_pressure().map(|v| format!("{:.0}", v)).unwrap_or_else(|| "--".to_string()),
-                temperature: Selected.get_temperature_outside().map(|v| format!("{:.0}", v)).unwrap_or_else(|| "--".to_string()),
-                water_in_device: Selected.get_water_in_device(),
-                latest_message: Selected.get_bluetooth_transmissions().last().cloned(),
+                heart_rate: blackboard.get_heart_rate().map(|v| format!("{:.0}", v)).unwrap_or_else(|| "--".to_string()),
+                blood_pressure: blackboard.get_blood_pressure().unwrap_or_else(|| "--/--".to_string()),
+                steps: blackboard.get_steps_taken().to_string(),
+                distance: format!("~{:.0}", blackboard.get_distance_traveled() * 3.28084),
+                barometric_pressure: blackboard.get_barometric_pressure().map(|v| format!("{:.0}", v)).unwrap_or_else(|| "--".to_string()),
+                temperature: blackboard.get_temperature_outside().map(|v| format!("{:.0}", v)).unwrap_or_else(|| "--".to_string()),
+                water_in_device: blackboard.get_water_in_device(),
+                latest_message: blackboard.get_bluetooth_transmissions().last().cloned(),
             };
 
             sink.add(ui_state);
@@ -103,27 +103,27 @@ pub fn start_event_driven_simulation(sink: StreamSink<WatchUiState>) -> anyhow::
 
             let bus_clone = bus.clone();
             tokio::spawn(async move {
-                crate::Unselected::sensor_manager::run_sensor_manager(bus_clone, loader).await;
+                crate::event_driven::sensor_manager::run_sensor_manager(bus_clone, loader).await;
             });
 
             let bus_health = bus.clone();
             tokio::spawn(async move {
-                crate::Unselected::health_app::run_health_app(bus_health).await;
+                crate::event_driven::health_app::run_health_app(bus_health).await;
             });
 
             let bus_weather = bus.clone();
             tokio::spawn(async move {
-                crate::Unselected::weather_app::run_weather_app(bus_weather).await;
+                crate::event_driven::weather_app::run_weather_app(bus_weather).await;
             });
 
             let bus_msg = bus.clone();
             tokio::spawn(async move {
-                crate::Unselected::message_app::run_message_app(bus_msg).await;
+                crate::event_driven::message_app::run_message_app(bus_msg).await;
             });
 
             let bus_water = bus.clone();
             tokio::spawn(async move {
-                crate::Unselected::water_removal_app::run_water_removal_app(bus_water).await;
+                crate::event_driven::water_removal_app::run_water_removal_app(bus_water).await;
             });
 
             let mut rx = bus.subscribe();
